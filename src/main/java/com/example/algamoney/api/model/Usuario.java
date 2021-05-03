@@ -2,31 +2,28 @@ package com.example.algamoney.api.model;
 
 import java.util.List;
 
-import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.JoinTable;
+import javax.persistence.ManyToMany;
 import javax.persistence.Table;
 
-import org.hibernate.annotations.ManyToAny;
-
 @Entity
-@Table(name ="usuario")
+@Table(name = "usuario")
 public class Usuario {
 
 	@Id
 	private Long codigo;
-	
+
 	private String nome;
 	private String email;
 	private String senha;
-	
-	@ManyToAny(fetch = FetchType.EAGER, metaColumn = @Column)
-	@JoinTable(name = "usuario_permissao", joinColumns = @JoinColumn(name = "codigo_usuario")
-	, inverseJoinColumns = @JoinColumn(name = "codigo_permissao"))
-	private List<Pemissao> permissoes;
+
+	@ManyToMany(fetch = FetchType.EAGER)
+	@JoinTable(name = "usuario_permissao", joinColumns = @JoinColumn(name = "codigo_usuario"), inverseJoinColumns = @JoinColumn(name = "codigo_permissao"))
+	private List<Permissao> permissoes;
 
 	public Long getCodigo() {
 		return codigo;
@@ -60,11 +57,11 @@ public class Usuario {
 		this.senha = senha;
 	}
 
-	public List<Pemissao> getPermissoes() {
+	public List<Permissao> getPermissoes() {
 		return permissoes;
 	}
 
-	public void setPermissoes(List<Pemissao> permissoes) {
+	public void setPermissoes(List<Permissao> permissoes) {
 		this.permissoes = permissoes;
 	}
 
@@ -92,7 +89,5 @@ public class Usuario {
 			return false;
 		return true;
 	}
-	
-	
 
 }

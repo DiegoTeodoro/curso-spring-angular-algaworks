@@ -19,31 +19,40 @@ public class AuthorizationServerConfig extends AuthorizationServerConfigurerAdap
 
 	@Autowired
 	private AuthenticationManager authenticationManager;
-	
+
 	@Autowired
 	private UserDetailsService userDetailsService;
-	
+
 	@Override
 	public void configure(ClientDetailsServiceConfigurer clients) throws Exception {
 		clients.inMemory()
-		.withClient("angular")
-        .secret("@ngul@r0")
-        .scopes("read", "write")
-        .authorizedGrantTypes("password", "refresh_token")
-        .accessTokenValiditySeconds(1800)
-        .refreshTokenValiditySeconds(3600 * 24);
+				.withClient("angular")
+				.secret("$2a$10$swJvYEoBFx5bYkfxzmQPouBp5F1lGL4WbdAj6N9v0eEpVA7hF.eYW")
+				.scopes("read", "write")
+				.authorizedGrantTypes("password", "refresh_token")
+				.accessTokenValiditySeconds(1800)
+				.refreshTokenValiditySeconds(3600 * 24)
+				.and()
+				.withClient("mobile")
+				.secret("m0b1l30")
+				.scopes("read")
+				.authorizedGrantTypes("password", "refresh_token")
+				.accessTokenValiditySeconds(1800)
+				.refreshTokenValiditySeconds(3600 * 24);
+
+
 	}
-	
+
 	@Override
 	public void configure(AuthorizationServerEndpointsConfigurer endpoints) throws Exception {
-	    endpoints
-	        .tokenStore(tokenStore())
-	        .accessTokenConverter(this.accessTokenConverter())
-	        .reuseRefreshTokens(false)
-	        .userDetailsService(this.userDetailsService)
-	        .authenticationManager(this.authenticationManager);
+		endpoints
+		.tokenStore(tokenStore())
+		.accessTokenConverter(this.accessTokenConverter())
+		.reuseRefreshTokens(false)
+		.userDetailsService(this.userDetailsService)
+		.authenticationManager(this.authenticationManager);
 	}
-	
+
 	@Bean
 	public JwtAccessTokenConverter accessTokenConverter() {
 		JwtAccessTokenConverter accessTokenConverter = new JwtAccessTokenConverter();
@@ -55,5 +64,5 @@ public class AuthorizationServerConfig extends AuthorizationServerConfigurerAdap
 	public TokenStore tokenStore() {
 		return new JwtTokenStore(accessTokenConverter());
 	}
-	
+
 }
